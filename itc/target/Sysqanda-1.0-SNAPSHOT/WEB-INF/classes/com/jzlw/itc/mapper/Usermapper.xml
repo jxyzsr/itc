@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jzlw.itc.mapper.Usermapper">
+    <resultMap id="usermap" type="com.jzlw.itc.domain.User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <!--以上属性可以拿来让下边的方法去用，associate是一对一关系，collection是一对多关系-->
+        <association property="headpicture" javaType="com.jzlw.itc.domain.Headpicture"
+                     select="com.jzlw.itc.mapper.Usermapper.selectuserposts7" column="id">
+        </association>
+        <collection property="postses" ofType="com.jzlw.itc.domain.Posts"
+                    select="com.jzlw.itc.mapper.Usermapper.selectuserposts0" column="id">
+        </collection>
+        <collection property="videos" ofType="com.jzlw.itc.domain.Video"
+                    select="com.jzlw.itc.mapper.Usermapper.selectuserposts1" column="id">
+        </collection>
+        <collection property="comments" ofType="com.jzlw.itc.domain.Comment"
+                    select="com.jzlw.itc.mapper.Usermapper.selectuserposts2" column="id">
+        </collection>
+        <collection property="goodps" ofType="com.jzlw.itc.domain.Goodp"
+                    select="com.jzlw.itc.mapper.Usermapper.selectuserposts2" column="id">
+        </collection>
+        <collection property="goodvs" ofType="com.jzlw.itc.domain.Goodv"
+                    select="com.jzlw.itc.mapper.Usermapper.selectuserposts3" column="id">
+        </collection>
+        <collection property="collectionps" ofType="com.jzlw.itc.domain.Collectionp"
+                    select="com.jzlw.itc.mapper.Usermapper.selectuserposts4" column="id">
+        </collection>
+        <collection property="collectionvs" ofType="com.jzlw.itc.domain.Collectionv"
+                    select="com.jzlw.itc.mapper.Usermapper.selectuserposts5" column="id">
+        </collection>
+        <collection property="trashcans" ofType="com.jzlw.itc.domain.Trashcan"
+                    select="com.jzlw.itc.mapper.Usermapper.selectuserposts6" column="id">
+        </collection>
+    </resultMap>
+    <!--测试用来输出所有用户-->
+    <select id="slectall" resultType="com.jzlw.itc.domain.User">
+        select * from user
+    </select>
+    <!--输出想要查找的用户和其它关系-->
+    <select id="selectuserattribute" resultMap="usermap">
+        select * from user where id = #{id}
+    </select>
+    <select id="selectuserposts0" resultType="com.jzlw.itc.domain.Posts">
+        select * from posts where userid = #{userid}
+    </select>
+    <select id="selectuserposts1" resultType="com.jzlw.itc.domain.Comment">
+        select * from comment where userid = #{userid}
+    </select>
+    <select id="selectuserposts2" resultType="com.jzlw.itc.domain.Goodp">
+        select * from goodp where userid = #{userid}
+    </select>
+    <select id="selectuserposts3" resultType="com.jzlw.itc.domain.Goodv">
+        select * from goodv where userid = #{userid}
+    </select>
+    <select id="selectuserposts4" resultType="com.jzlw.itc.domain.Collectionp">
+        select * from collectionp where userid = #{userid}
+    </select>
+    <select id="selectuserposts5" resultType="com.jzlw.itc.domain.Collectionv">
+        select * from collectionv where userid = #{userid}
+    </select>
+    <select id="selectuserposts6" resultType="com.jzlw.itc.domain.Trashcan">
+        select * from trashcan where userid = #{userid}
+    </select>
+    <select id="selectuserposts7" resultType="com.jzlw.itc.domain.Headpicture">
+        select * from headpicture where userid = #{userid}
+    </select>
+
+</mapper>

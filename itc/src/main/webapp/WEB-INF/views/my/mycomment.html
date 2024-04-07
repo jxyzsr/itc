@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我的评论</title>
+    <script src="/static/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="/static/css/base.css">
+</head>
+<body>
+<div class="display"></div>
+<script>
+    var url = "/transmitinfo"
+    $.ajax({
+        url:url,
+        type:"post",
+        dataType:"json",
+        success:function (data){
+            var user = data
+            var thehtml = "<h2>" + "我的评论" +"</h2>"
+            user.comments.forEach((item,index) => {
+                if(item.type === "posts"){
+                    str = "<p>一个帖子的评论：</p>"
+                    str +=
+                        "<div class='star2'>"
+                              +"<a class='star2a' href='/loadpostsid?postsid="+ item.itid + "'>"
+                                  +"<h3 class='star2h3'>" + item.content + "</h3>"
+                              +"</a>"
+                              +"<form action='/deleteacomment' style='display: inline' method='post'>"
+                                +"<input type='hidden' name='type' value='posts'>"
+                                +"<input type='hidden' name='itid' value='"+item.itid+"'>"
+                                +"<input type='hidden' name='content' value='"+item.content+"'>"
+                                +"<button class='button' style='float: right'>确认删除</button>"
+                              +"</form>"
+                        +"</div>"
+                    thehtml = thehtml + str
+                }
+                else if (item.type === "video"){
+                    str = "<p>一个视频的评论：</p>"
+                    str +=
+                           "<div class='star2'>"
+                               +"<a class='star2a' href='/loadid?fileId="+ item.itid + "'>"
+                                   +"<h3 class='star2h3'>" + item.content + "</h3>"
+                               +"</a>"
+                               +"<form action='/deleteacomment' style='display: inline' method='post'>"
+                                    +"<input type='hidden' name='type' value='video'>"
+                                    +"<input type='hidden' name='itid' value='"+item.itid+"'>"
+                                    +"<input type='hidden' name='content' value='"+item.content+"'>"
+                                    +"<button class='button' style='float: right'>确认删除</button>"
+                               +"</form>"
+                           +"</div>"
+                    thehtml = thehtml + str
+                }
+            })
+            $('.display').html(thehtml)
+        },
+        error:function (xhr,status){
+            console.log("错误了")
+            console.log(status)
+        }
+    })
+</script>
+</body>
+</html

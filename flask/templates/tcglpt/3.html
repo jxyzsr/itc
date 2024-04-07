@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>#chart-panel {
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+            }
+</style>
+      <script src="static/echarts.min.js"></script>
+      <script src="static/layui.js"></script>
+      <link rel="stylesheet" href="static/layui-v2.6.8/layui/css/layui.css">
+      <script src="static/jquery.min.js"></script>
+</head>
+<body>
+<!--<button onclick=history.go(0)>刷新网页</button>-->
+<div id="chart-panel" style="margin-top:30px"></div>
+<form class="layui-form" method="post" action="http://127.0.0.1:5000/deleateaword">
+  <div class="layui-form-item">
+    <label class="layui-form-label">自动加入</label>
+    <div class="layui-input-block">
+        <input id="inputUser" type="text" name="title" placeholder="点击要删除的词语" autocomplete="off" class="layui-input" style="display:inline; width:400px!important;height: 30px!important;">
+        <input type="text" name="url" value="3" style="display:none;">
+        <button style="display:inline; width: 60px; height: 30px; border-radius:20px;">提交</button>
+    </div>
+  </div>
+</form>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('chart-panel'));
+ myChart.showLoading();
+$.getJSON('http://127.0.0.1:35000/pachong/return2', function (graph) {
+    console.log(graph.data)
+    myChart.hideLoading();
+
+    var links = []
+    $.each(graph.links,function (i, val){
+       var obj = {target:val.target, source:val.source};
+       var width = 1;
+       var width2 = parseInt(val.lineStyle.width);
+       if(width2){
+           width = width2;
+
+       }
+       obj.lineStyle = {
+           width:width,
+           color: 'source',
+           curveness:0.3
+       }
+       links.push(obj);
+    });
+
+    option = {
+        tooltip: {},
+        legend: [{
+            data: graph.categories.map(function (a) {
+                return a.name;
+            })
+        }],
+        series: [
+            {
+                name: '粮食大数据平台',
+                type: 'graph',
+                layout: 'circular',
+               data: graph.data,
+
+            // 线条数据格式
+                links: links
+     ,
+                categories: graph.categories,
+                roam: true,
+                label: {
+                    show: true,
+                    position: 'right',
+                    formatter: '{b}'
+                },
+                labelLayout: {
+                    hideOverlap: true
+                },
+                scaleLimit: {
+                    min: 0.4,
+                    max: 2
+                },
+
+            emphasis: {
+                focus: 'adjacency',
+                lineStyle: {
+                 width: 10
+                            }
+                     }
+            }
+        ]
+    };
+
+    myChart.setOption(option);
+});
+</script>
+<script type="text/javascript">
+var myChart = echarts.init(document.getElementById('chart-panel'));
+myChart.on('click', function (params) {
+          console.log(params.name)
+          document.getElementById("inputUser").value=params.name;
+        })
+</script>
+</body>
+</html>

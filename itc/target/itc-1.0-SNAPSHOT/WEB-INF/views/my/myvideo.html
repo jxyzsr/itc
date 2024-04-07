@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/static/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="/static/css/base.css">
+</head>
+<body>
+<div class="display" style="width: auto;height: auto;margin: 0"></div>
+<script>
+    var url = "/transmitinfo"
+    $.ajax({
+        url:url,
+        type:"post",
+        dataType:"json",
+        success:function (data){
+            var user = data
+            var thehtml = "<h2>" + "这是我上传的视频" +"</h2>"
+            user.videos.forEach((item,index) => {
+                str =
+                    "<div class='star1'>"
+                        + "<a class='star1a' href='/loadid?fileId="+item.fileId +"'>"
+                            +"<img class='star1img' src='" + item.cover + "'>"
+                        +"</a>"
+                        +"<h4 class='star1h4'>"+ item.title+"</h4><br>"
+                        +"<h4 class='star1h4'>"+ item.uploadTime+"</h4>"
+                        +"<form action='/deletevideo' style='display: inline' method='post'>"
+                            +"<input type='hidden' name='id' value='"+item.fileId+"'>"
+                            +"<input type='hidden' name='filename' value='"+item.path+"'>"
+                            +"<br><button class='button'>确认删除</button>"
+                        +"</form>"
+                    +"</div>"
+                thehtml = thehtml + str
+            })
+            $('.display').html(thehtml)
+        },
+        error:function (xhr,status){
+            console.log("错误了")
+            console.log(status)
+        }
+    })
+</script>
+</body>
+</html>

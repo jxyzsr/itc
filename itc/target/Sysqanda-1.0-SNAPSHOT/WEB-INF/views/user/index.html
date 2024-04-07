@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>云问答</title>
+  <script src="/static/js/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="/static/css/cssindex.css">
+</head>
+<body>
+<header>
+  <a href="#" class="logo">云问答</a>
+  <ul>
+    <li><a href="/myquestion" target="frame">我的问题</a></li>
+    <li><a href="/myanswer" target="frame">我的回答</a></li>
+    <li><a href="/searchquestion" target="frame">搜索问题</a></li>
+    <li><a href="/myinfo">个人信息</a></li>
+  </ul>
+</header>
+<div class="banner">
+  <iframe class="outframe" id="form-iframe" name="frame" src="/indexquestion" frameborder="none"></iframe>
+  <div class="sidebar">
+    <ul>
+      <li><a class="icon ion-home" href="/index"></a></li>
+      <li><a class="ion-help" href="/writequestion" target="frame"></a></li>
+      <li><a class="icon ion-android-create" href="/writeanswer" target="frame"></a></li>
+      <li><a href="/login" class="ion-android-walk"></a></li>
+      <!--    <li><a class="icon ion-happy-outline" href="#"></a></li>-->
+    </ul>
+  </div>
+  <a class="btn"></a>
+</div>
+<script>
+  window.onscroll=function(){
+    document.querySelector('header').classList.toggle('sticky',window.scrollY>0)
+  }
+  $(".btn").click(function(){
+    $('.btn').toggleClass('btnc')
+    $('.sidebar').toggleClass('side')
+  })
+</script>
+</body>
+</html>

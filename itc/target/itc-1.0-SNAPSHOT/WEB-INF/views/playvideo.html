@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>展示视频</title>
+  <script src="/static/js/jquery.min.js"></script>
+  <link rel="stylesheet" href="/static/css/base.css">
+  <link rel="stylesheet" href="/static/layui-v2.6.8/layui/css/layui.css">
+
+</head>
+<body>
+  <div class="display"></div>
+  <div class="gandc"></div>
+  <div class="addcomment">
+    <form action="/addcomment" method="get">
+      <input id="type" type="hidden" name="type" value="video">
+      <input id="userid" type="hidden" name="userid" value="">
+      <input id="itid" type="hidden" name="itid" value="">
+      <textarea id="content" name="content" class="content1" cols="20" maxlength="400"></textarea>
+      <button class="button1">发布评论</button>
+    </form>
+  </div>
+  <div class="comment" ></div>
+<script>
+  var video = ""
+  $.ajax({
+    url:"/getvideo",
+    type:"post",
+    dataType:"json",
+    success:function (data){
+      video = data
+      var thehtml = "<h1 class='displayh1'>标题:&nbsp;&nbsp;" + video.title +"</h1>"
+      str = " <video width='1000' height='600' controls>"
+                +"<source src='"+"/static/"+video.path+"' type='video/mp4'>"
+              +"</video>"
+      thehtml = thehtml + str
+      $('.display').html(thehtml)
+    },
+    error:function (xhr,status){
+      console.log("错误了")
+      console.log(status)
+    }
+  })
+  var user = ""
+  $.ajax({
+    url:"/transmitinfo",
+    type:"post",
+    dataType:"json",
+    success:function (data){
+      user = data
+      var result = 0
+      var thehtml =  "<div class='sty2'>"
+                        +"<h1 class='sty2h1'>视频的点赞和收藏</h1>"
+                        +"<br><h2>用户简介:</h2><br>"
+                        +"<img src= '" + video.user.headpicture.padress + "'>"
+                        +"<h4>发布者:"+video.user.username+"</h4>"
+                        +"<br><h4>发布时间:"+ video.uploadTime+"</h4><br><br>"
+                        +"<br><h3>点赞数:"+video.numgood+"</h3>"
+                        +"<br><h3>收藏数:"+video.numcollection+"</h3><br>"
+                    +"</div>"
+      try {
+        var str = ""
+        user.goodvs.forEach((item,index) => {
+          if(item.videoid === video.fileId){
+            str = "<a title='取消点赞' href='/deletegoodv?userid="+user.id+"&videoid="+video.fileId+"'><i class=\"layui-icon\" style=\"font-size: 30px; color: #df0707a8;\">&#xe68f;</i></a>&nbsp;&nbsp;&nbsp;&nbsp;"
+            thehtml = thehtml + str
+            result++
+            throw new Error('找到了')
+          }
+        })
+      }catch (e) {
+        if (e.message !== "找到了") throw e
+      }
+      //如果本来就没有点赞直接显示可以点赞
+      if (user.goodvs.length === 0){
+        str = "<a title='点赞' href='/addgoodv?userid="+user.id+"&videoid="+video.fileId+"'><i class=\"layui-icon\" style=\"font-size: 30px; color: #df0707a8;\">&#xe68c;</i></a>&nbsp;&nbsp;&nbsp;&nbsp;"
+        thehtml = thehtml + str
+      }
+      //没有进入if就可以点赞
+      else if (result === 0){
+        str = "<a title='点赞' href='/addgoodv?userid="+user.id+"&videoid="+video.fileId+"'><i class=\"layui-icon\" style=\"font-size: 30px; color: #df0707a8;\">&#xe68c;</i></a>&nbsp;&nbsp;&nbsp;&nbsp;"
+        thehtml = thehtml + str
+      }
+      //收藏
+      result = 0
+      try {
+        var str = ""
+        user.collectionvs.forEach((item,index) => {
+          if(item.videoid === video.fileId){
+            str = "<a title='取消收藏' href='/deletecollectionv?userid="+user.id+"&videoid="+video.fileId+"'><i class=\"layui-icon\" style=\"font-size: 30px; color: #df0707a8;\">&#xe658;</i></a>"
+            thehtml = thehtml + str
+            result++
+            throw new Error('找到了')
+          }
+        })
+      }catch (e) {
+        if (e.message !== "找到了") throw e
+      }
+      //如果本来就没有点赞直接显示可以点赞
+      if (user.collectionvs.length === 0){
+        str = "<a title='收藏' href='/addcollectionv?userid="+user.id+"&videoid="+video.fileId+"'><i class=\"layui-icon\" style=\"font-size: 30px; color: #df0707a8;\">&#xe600;</i></a>"
+        thehtml = thehtml + str
+      }
+      //没有进入if就可以点赞
+      else if (result === 0){
+        str = "<a title='收藏' href='/addcollectionv?userid="+user.id+"&videoid="+video.fileId+"'><i class=\"layui-icon\" style=\"font-size: 30px; color: #df0707a8;\">&#xe600;</i></a>"
+        thehtml = thehtml + str
+      }
+      $('.gandc').html(thehtml)
+      $("#userid").attr('value',user.id)
+      $("#itid").attr('value',video.fileId)
+    },
+    error:function (xhr,status){
+      console.log("错误了")
+      console.log(status)
+    }
+  })
+  $.ajax({
+    url:"/getvideocomment",
+    type:"post",
+    dataType:"json",
+    success:function (data){
+      var comment = data
+      var thehtml = "<h1>" + "评论区" +"</h1>"
+      comment.forEach((item,index) => {
+        str = "<div class='star2'>"
+                +"<span style='color: #243b65; font-family: 等线'>用户" + item.user.username + "评论:</span><hr>"
+                +"<br><h3 style='color: #243b65; font-family: 等线'>" +item.content + "</h3>"
+                +"</div>"
+          thehtml = thehtml + str
+      })
+      $('.comment').html(thehtml)
+    },
+    error:function (xhr,status){
+      console.log("错误了")
+      console.log(status)
+    }
+  })
+</script>
+</body>
+</html>

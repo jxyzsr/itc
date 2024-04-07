@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/echarts.min.js"></script>
+</head>
+<body>
+<div id="chart" style="margin-left: 11%;width:1600px;height:1000px;"></div>
+<script>
+    var chartdata = []
+    var really = []
+    const echartsize = {width:"1200px",height:"800px"}
+    $.ajax({
+        url:"/infooftrash",
+        type:"post",
+        dataType:"json",
+        success:function (data){
+            chartdata = data
+            chartdata.forEach((item,index) => {
+                let arr = {value:"",name:""}
+                arr.name = item.name + "-" +item.type
+                arr.value = item.frequency
+                really.push(arr)
+            })
+            chartdata = really
+            var Chart = echarts.init(document.getElementById('chart'),null,echartsize);
+            var option = {
+                title: {
+                    text: '用户不知道如何分类的垃圾的信息统计',
+                    subtext: '统计饼图',
+                    left: 'center'
+                },
+                legend: {
+                    top: 'bottom'
+                },
+                grid: {
+                    top: "0%",// 距离容器 顶部 距离
+                    bottom: "0%",// 距离容器 底部 距离
+                    left: "0%",// 距离容器 左侧 距离
+                    right: "0%",// 距离容器 右侧 距离
+                    containLabel: true,// 图表内容距离容器边界是否包含坐标轴
+                },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        mark: { show: true },
+                        dataView: { show: true, readOnly: false },
+                        restore: { show: true },
+                        saveAsImage: { show: true }
+                    }
+                },
+                series: [
+                    {
+                        name: 'Nightingale Chart',
+                        type: 'pie',
+                        radius: [50, 250],
+                        center: ['50%', '50%'],
+                        roseType: 'area',
+                        itemStyle: {
+                            borderRadius: 8
+                        },
+                        data: chartdata
+                    }
+                ]
+            };
+            Chart.setOption(option);
+        },
+        error:function (xhr,status){
+            console.log("错误了")
+            console.log(status)
+        }
+    })
+
+</script>
+</body>
+</html>

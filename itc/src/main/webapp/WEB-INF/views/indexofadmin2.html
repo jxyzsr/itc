@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>垃圾分类知识社区</title>
+  <script src="/static/js/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="/static/css/cssindexadmin.css">
+  <style>
+    .box {
+      background-color: rgb(247, 243, 239);
+      width: 40%;
+      margin-top: 17%;
+      margin-left: 30%;
+      padding: 28px;
+      height: 350px;
+      border: 11px rgb(124, 169, 243) solid;
+      border-radius: 30px;
+      display:none;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <a href="/indexofadmin2" class="logo">垃圾分类知识社区</a>
+  <ul>
+    <li><a href="/infooftrash" target="frame">垃圾分类信息</a></li>
+    <li><a href="/noticeset" target="frame">公告设置</a></li>
+    <li><a href="/trashmap">垃圾桶位置</a></li>
+    <li><a href="/myvideo" target="frame">我的视频</a></li>
+    <li><a href="/myposts" target="frame">我的帖子</a></li>
+    <li><a href="/mygood" target="frame">我赞过的</a></li>
+    <li><a href="/mycollection" target="frame">我的收藏</a></li>
+    <li><a href="/mycomment" target="frame">我的评论</a></li>
+    <li><a href="/myinfo">个人信息</a></li>
+  </ul>
+  <a href="/updateheadpicture"><img id="headpicture" src="" class="round_icon" alt="我的头像"></a>
+</header>
+<div class="banner">
+  <iframe class="outframe" id="form-iframe" name="frame" src="/hello" frameborder="none"></iframe>
+  <div class="sidebar">
+    <ul>
+      <li><a class="icon ion-home" style="font-size: 45px" href="/indexofadmin2"></a></li>
+      <li><a class="icon ion-ios-videocam" style="font-size: 44px" href="/addvideo" target="frame"></a></li>
+      <li><a class="icon ion-android-create" style="font-size: 45px" href="/writeposts" target="frame"></a></li>
+      <li><a class="icon ion-ios-trash" style="font-size: 45px" href="/trashclassficion" target="frame"></a></li>
+      <li><a class="ion-android-walk" style="font-size: 45px" href="/login"></a></li>
+    </ul>
+  </div>
+  <a class="btn"></a>
+</div>
+<script>
+  window.onscroll=function(){
+    document.querySelector('header').classList.toggle('sticky',window.scrollY>0)
+  }
+  $(".btn").click(function(){
+    $('.btn').toggleClass('btnc')
+    $('.sidebar').toggleClass('side')
+  })
+  var url = "/transmitinfo"
+  $.ajax({
+    url:url,
+    type:"post",
+    dataType:"json",
+    success:function (data){
+      var user = data
+      $("#headpicture").attr('src',user.headpicture.padress)
+    },
+    error:function (xhr,status){
+      console.log("错误了")
+      console.log(status)
+    }
+  })
+</script>
+</body>
+</html>

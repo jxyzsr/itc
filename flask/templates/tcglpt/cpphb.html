@@ -1,0 +1,283 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>#chart-panel {
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+            }
+        #bg{ display: none;  position: absolute;  top: 0%;  left: 0%;  width: 100%;  height: 100%;  background-color: white;  z-index:1001;  -moz-opacity: 0.7;  opacity:.70;  filter: alpha(opacity=70);}
+        #show{display: none;  position: absolute;  top: 25%;  left: 22%;  width: 53%;  height: 49%;  padding: 8px;  border: 8px solid #E8E9F7;  background-color: white;  z-index:1002;  overflow: auto;}
+        /*遮罩图片居中显示*/
+        .zhezhao{
+            position: absolute;
+            top:50%;
+            left: 50%;
+            width: 35%;
+            height: 45%;
+            transform: translate(-50%,-50%);
+        }
+</style>
+<script src="static/echarts.min.js"></script>
+<script src="static/jquery.min.js"></script>
+<script src="static/layui.js"></script>
+</head>
+<body>
+    <div id="bg">
+        <img class="zhezhao" src="static/images/1.gif">
+    </div>    <!-- 遮罩层  -->
+    <h3>点击自动写入(停词点提交按钮后，再点刷新按钮即可)</h3>
+     <form class="layui-form" method="post" action="http://127.0.0.1:5000/deleateaword" style="display: inline">
+         <input id="inputUser" type="text" name="title" placeholder="点击要删除的词语" autocomplete="off" style="display:inline; width:400px!important;height: 30px!important;">
+         <button  id="sub1"  style="display:inline; width: 60px; height: 30px; border-radius:20px;">提交</button>
+     </form>
+     <form style="display:inline" method="post" action="http://127.0.0.1:35000/updateallci">
+         <input type="text" name="title" autocomplete="off" style="display:none;">
+         <button id="sub2" onclick="showdiv()" style="display:inline; width: 60px; height: 30px; border-radius:20px;">刷新</button>
+     </form>
+    <div id="chart-panel" style="margin-top:10%"></div>
+
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('chart-panel'));
+$.getJSON('http://127.0.0.1:35000/pachong/return16', function (graph) {
+    var years=['今天','近七天','近一个月']
+    option = {
+
+        baseOption: {
+            timeline: {
+                data: years,
+                axisType: 'category',
+                autoPlay: false,
+                playInterval: 5000,
+                left: '10%',
+                right: '10%',
+                bottom: '0%',
+                width: '80%',
+                //  height: null,
+                label: {
+                    normal: {
+                        textStyle: {
+
+                            color: '#ff8800',
+                        }
+                    },
+                    emphasis: {
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    }
+                },
+                symbolSize: 10,
+                lineStyle: {
+                    color: '#555'
+                },
+                checkpointStyle: {
+                    borderColor: '#777',
+                    borderWidth: 2
+                },
+                controlStyle: {
+                    showNextBtn: true,
+                    showPrevBtn: true,
+                    normal: {
+                        color: '#ff8800',
+                        borderColor: '#ff8800'
+                    },
+                    emphasis: {
+                        color: '#aaa',
+                        borderColor: '#aaa'
+                    }
+                },
+
+            },
+            title: {
+                text: '',
+                right: '2%',
+                bottom: '8%',
+                textStyle: {
+                    fontSize: 50,
+                    color: '#666'
+                }
+            },
+            tooltip: {
+                'trigger': 'axis'
+            },
+            calculable: true,
+            grid: {
+                left: '8%',
+                right: '2%',
+                bottom: '6%',
+                top: 0,
+                containLabel: true
+            },
+            label: {
+                normal: {
+                    textStyle: {
+                        color: '#fff'
+                    }
+                }
+            },
+            yAxis: [{
+                offset: '37',
+                'type': 'category',
+                data: '',
+                nameTextStyle: {
+                    color: '#fff'
+                },
+                axisLabel: {
+                    //rotate:45,
+                    textStyle: {
+                        fontSize: 12,
+                        color: '#333',
+                    },
+                    interval: 0
+                },
+                axisLine: {
+
+                    lineStyle: {
+                        color: '#333'
+                    },
+                },
+                splitLine: {
+                    show: false,
+                    lineStyle: {
+                        color: '#333'
+                    }
+                },
+
+            }],
+            xAxis: [{
+                'type': 'value',
+                'name': '',
+
+                splitNumber: 8,
+                nameTextStyle: {
+                    color: '#333'
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#333'
+                    }
+                },
+                axisLabel: {
+                    formatter: '{value} '
+                },
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#ccc'
+                    }
+                },
+            }],
+            series: [{
+                'name': '',
+                'type': 'bar',
+                markLine: {
+                    label: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    lineStyle: {
+                        normal: {
+                            color: 'red',
+                            width: 3
+                        }
+                    },
+                },
+                barWidth: '50%',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'inside',
+                        formatter: '{c}'
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: function (params) {
+                            // build a color map as your need.
+                            var colorList = [
+                                '#bcd3bb', '#e88f70', '#9dc5c8', '#e1e8c8',
+                                '#7b7c68', '#e5b5b5', '#f0b489', '#928ea8',
+                                '#bda29a', '#376956', '#c3bed4', '#495a80',
+                                '#9966cc', '#bdb76a', '#eee8ab', '#a35015',
+                                '#04dd98', '#d9b3e6', '#b6c3fc', '#315dbc',
+                            ];
+                            return colorList[params.dataIndex]
+                        },
+
+                    }
+                },
+            }],
+            animationDurationUpdate: 2000,
+            animationEasingUpdate: 'quinticInOut'
+        },
+        options: []
+    };
+    for (var n = 0; n < years.length; n++) {
+
+        var res = [];
+        //alert(jdData.length);
+        for (j = 0; j < graph.data[n].length; j++) {
+            res.push({
+                name: graph.jdData[n][j],
+                value: graph.data[n][j]
+            });
+
+        }
+
+        res.sort(function (a, b) {
+            return b.value - a.value;
+        }).slice(0, 6);
+
+        res.sort(function (a, b) {
+            return a.value - b.value;
+        });
+        var res1 = [];
+        var res2 = [];
+        //console.log(res);
+        for (t = 0; t < res.length; t++) {
+            res1[t] = res[t].name;
+            res2[t] = res[t].value;
+        }
+        console.log(res1);
+        console.log("----------------");
+        option.options.push({
+            title: {
+                text: years[n]
+            },
+            yAxis: {
+                data: res1,
+            },
+            series: [{
+                data: res2
+            }]
+        });
+    }
+    if (option) {
+        myChart.setOption(option);
+    }
+})
+    </script>
+<script>
+    var myChart = echarts.init(document.getElementById('chart-panel'));
+    myChart.on('click', function (params) {
+          console.log(params.name)
+          document.getElementById("inputUser").value=params.name;
+        })
+    function showdiv() {
+        document.getElementById("bg").style.display ="block";
+        setTimeout(function() {
+            document.getElementById("bg").style.display ='none';
+        }, 100000);
+    }
+</script>
+</body>
+</html>

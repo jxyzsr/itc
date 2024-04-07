@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>我的帖子</title>
+  <script src="/static/js/jquery.min.js"></script>
+  <link rel="stylesheet" href="/static/css/base.css">
+</head>
+<body>
+<div class="display"></div>
+<script>
+  var url = "/transmitinfo"
+  $.ajax({
+    url:url,
+    type:"post",
+    dataType:"json",
+    success:function (data){
+      var user = data
+      var thehtml = "<h2>" + "我的帖子" +"</h2>"
+      user.postses.forEach((item,index) => {
+        str =
+              "<div class='star2'>"
+                  +"<div class='title'>"
+                    +"<a class='star2a' href='/loadpostsid?postsid="+ item.id + "'>"
+                      +"<h2 class='star2h2'>" + item.title + "</h2><br>"
+                    +"</a>"
+                    +"<br><span class='content'>帖子内容速看："+item.content+"</span>"
+                    +"<form action='/deleteposts' style='display: inline; width: 80%' method='post'>"
+                      +"<input type='hidden' name='id' value='"+item.id+"'>"
+                      +"<button class='button' style='float: right'>确认删除</button>"
+                    +"</form>"
+                  +"</div>"
+              +"</div>"
+        thehtml = thehtml + str
+      })
+      $('.display').html(thehtml)
+    },
+    error:function (xhr,status){
+      console.log("错误了")
+      console.log(status)
+    }
+  })
+</script>
+</body>
+</html>

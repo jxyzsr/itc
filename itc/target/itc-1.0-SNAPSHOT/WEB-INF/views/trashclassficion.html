@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>垃圾分类</title>
+    <link rel="stylesheet" href="/static/css/csslogup.css">
+    <script src="/static/js/jquery.min.js"></script>
+</head>
+<body>
+<div class="rg_layout" style="margin-top: 6%">
+    <div class="rg_left">
+        <p>垃圾分类</p>
+        <p>TRASH CLASSIFICATION</p>
+    </div>
+    <div class="rg_center">
+        <div class="rg_form">
+            <form method="post" action="http://127.0.0.1:5000/trashclassficion" enctype="multipart/form-data">
+                <br><br><br><br><br><br><br>
+                <table>
+                    <!--label 标签的作用是当点击文字也会跳到文本输出框-->
+                    <!--for属性与ID属性对应规定 label 绑定到哪个表单元素。-->
+                    <tr>
+                        <td class="td_left"><label for="photo">标题</label> </td>
+                        <td class="td_right"><input type="file" name="photo" value="" id="photo" class="password"></td>
+                    </tr>
+                    </tr>
+                    <td colspan="2" align="center">
+                        <br>
+                        <br>
+                        <button id="btn_sub">确认提交</button>
+                    </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

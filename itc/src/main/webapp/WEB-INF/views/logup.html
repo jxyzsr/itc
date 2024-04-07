@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>注册页面</title>
+  <!--    引入格式文件-->
+  <link rel="stylesheet" href="/static/css/csslogup.css">
+  <script src="/static/js/jquery.min.js"></script>
+</head>
+<body>
+<div class="rg_layout" style="margin-top: 6%">
+  <div class="rg_left">
+    <p>新用户注册</p>
+    <p>USER REGISTER</p>
+  </div>
+  <div class="rg_center">
+    <div class="rg_form">
+      <form action="/dologup" method="post">
+        <br><br><br><br><br><br><br>
+        <table>
+          <!--label 标签的作用是当点击文字也会跳到文本输出框-->
+          <!--for属性与ID属性对应规定 label 绑定到哪个表单元素。-->
+          <tr>
+            <td class="td_left"><label for="username">用户名</label> </td>
+            <td class="td_right"><input type="text" name="username" id="username"> </td>
+          </tr>
+          <tr>
+            <td class="td_left"><label for="gender">性别</label> </td>
+            <td class="td_right">
+              <select name="sex" id="gender" class="password">
+                <option value="男">男</option>
+                <option value="女">女</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td class="td_left"><label for="age">年龄</label> </td>
+            <td class="td_right"><input type="text" class="password" name="age" id="age"></td>
+          </tr>
+          <tr>
+            <td class="td_left"><label for="email">邮箱</label> </td>
+            <td class="td_right"><input type="email" name="email" id="email"></td>
+          </tr>
+          <tr>
+            <td class="td_left"><label for="password">密码</label> </td>
+            <td class="td_right"><input type="password" name="password" id="password"></td>
+          </tr>
+          <tr>
+            <td class="td_left"><label for="repassword">确认密码</label> </td>
+            <td class="td_right"><input type="password" class="password" id="repassword"></td>
+          </tr>
+
+          <!-- <tr>label 标签的作用是当点击文字也会跳到文本输出框
+              <td class="td_left"><label for="email">email</label> </td>
+              <td class="td_right"><input type="email" name="email" id="email"> </td>
+          </tr>
+          <tr>
+              <td class="td_left"><label for="tel">手机号</label> </td>
+              <td class="td_right"><input type="text" name="tel" id="tel"> </td>
+          </tr>
+          <tr>
+              <td class="td_left"><label for="checkcode">验证码</label> </td>
+              <td class="td_right">
+                  <input type="text" name="username" id="checkcode">
+                  <input type="button"value="发送验证码">
+                  <img src="images/verify_code.jpg" id="img_check">
+              </td>
+          </tr> -->
+          <tr>
+            <td colspan="2" align="center">
+              <button id="btn_sub">注册</button>
+            </td>
+          </tr>
+        </table>
+      </form>
+      <div class="error"></div>
+    </div>
+  </div>
+  <div class="rg_right">
+    <p>已有账号？<a href="/login">立即登录</a></p>
+  </div>
+</div>
+<script>
+        function checkpassword(){
+          var p1 = document.getElementById("repassword").value
+          var p2 = document.getElementById("password").value
+          if (p1 !== p2){
+            $("#btn_sub").attr("disabled",true);
+            var str1 = "<h3 style=\" color:red;text-align:center; \">"+"两次密码输入不一致"+"</h3>"
+            $(".error").html(str1)
+          } else{
+            $("#btn_sub").attr("disabled",false);
+            var str2 = ""
+            $(".error").html(str2)
+          }
+          setInterval(checkpassword, 1000)
+        }
+        checkpassword()
+</script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+body {
+    margin: 0;
+    padding: 0;
+    min-width: 1500px;
+}
+.logos {
+    text-align: center;
+}
+
+.logo {
+    margin-top: 13%;
+    width: 90px;
+    height: 100px;
+}
+
+.search {
+    margin-top: 2%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.search .text {
+    width: 516px;
+    height: 36px;
+    border: 1px solid #a7aab4;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    outline: 1px solid #a7aab4;
+}
+
+.text:focus {
+    outline: 1px solid #4c6fef;
+}
+
+.search .button {
+    width: 105px;
+    border: none;
+    font-size: 16px;
+    height: 42px;
+    margin-top: -1px;
+    color: white;
+    background-color: #4d6ef1;
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.one {
+    width: 50%;
+}
+
+strong:hover {
+    color: #4c6fef;
+    cursor: pointer;
+}
+
+.two {
+    color: #9195a3;
+    width: 50%;
+}
+
+.two span {
+    text-align: right;
+    cursor: pointer;
+}
+
+.two span:hover {
+    color: #4c6fef;
+    cursor: pointer;
+}
+.content div {
+    width: 50%;
+    text-align: left;
+    padding-top: 7px;
+}
+
+.content div a {
+    text-decoration: none;
+    color: black;
+}
+
+.content div a:hover {
+    text-decoration: underline;
+    color: #4c6fef;
+}
+
+.unique:hover {
+    cursor: default;
+}

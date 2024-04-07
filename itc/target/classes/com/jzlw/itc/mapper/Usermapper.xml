@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jzlw.itc.mapper.Usermapper">
+    <resultMap id="usermap" type="com.jzlw.itc.domain.User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <!--以上属性可以拿来让下边的方法去用，associate是一对一关系，collection是一对多关系-->
+        <association property="headpicture" javaType="com.jzlw.itc.domain.Headpicture"
+                     select="com.jzlw.itc.mapper.Usermapper.selectuserposts8" column="id">
+        </association>
+        <collection property="postses" ofType="com.jzlw.itc.domain.Posts"
+                    select="com.jzlw.itc.mapper.Usermapper.selectuserposts0" column="id">
+        </collection>
+        <collection property="videos" ofType="com.jzlw.itc.domain.FileEntity"
+                    select="com.jzlw.itc.mapper.Usermapper.selectuserposts1" column="id">
+        </collection>
+        <collection property="comments" ofType="com.jzlw.itc.domain.Comment"
+                    select="com.jzlw.itc.mapper.Usermapper.selectuserposts2" column="id">
+        </collection>
+        <collection property="goodps" ofType="com.jzlw.itc.domain.Goodp"
+                    select="com.jzlw.itc.mapper.Usermapper.selectuserposts3" column="id">
+        </collection>
+        <collection property="goodvs" ofType="com.jzlw.itc.domain.Goodv"
+                    select="com.jzlw.itc.mapper.Usermapper.selectuserposts4" column="id">
+        </collection>
+        <collection property="collectionps" ofType="com.jzlw.itc.domain.Collectionp"
+                    select="com.jzlw.itc.mapper.Usermapper.selectuserposts5" column="id">
+        </collection>
+        <collection property="collectionvs" ofType="com.jzlw.itc.domain.Collectionv"
+                    select="com.jzlw.itc.mapper.Usermapper.selectuserposts6" column="id">
+        </collection>
+        <collection property="trashcans" ofType="com.jzlw.itc.domain.Trashcan"
+                    select="com.jzlw.itc.mapper.Usermapper.selectuserposts7" column="id">
+        </collection>
+    </resultMap>
+    <resultMap id="goodvmap" type="com.jzlw.itc.domain.Goodv">
+        <result column="userid" property="userid"/>
+        <result column="videoid" property="videoid"/>
+        <association property="video" javaType="com.jzlw.itc.domain.FileEntity"
+                    select="com.jzlw.itc.mapper.Filemapper.findByid" column="videoid">
+        </association>
+    </resultMap>
+    <resultMap id="goodpmap" type="com.jzlw.itc.domain.Goodp">
+        <result column="userid" property="userid"/>
+        <result column="postsid" property="postsid"/>
+        <association property="posts" javaType="com.jzlw.itc.domain.Posts"
+                    select="com.jzlw.itc.mapper.Postsmapper.findByid" column="postsid">
+        </association>
+    </resultMap>
+    <resultMap id="collectionvmap" type="com.jzlw.itc.domain.Collectionv">
+        <result column="userid" property="userid"/>
+        <result column="videoid" property="videoid"/>
+        <association property="video" javaType="com.jzlw.itc.domain.FileEntity"
+                    select="com.jzlw.itc.mapper.Filemapper.findByid" column="videoid">
+        </association>
+    </resultMap>
+    <resultMap id="collectionpmap" type="com.jzlw.itc.domain.Collectionp">
+        <result column="userid" property="userid"/>
+        <result column="postsid" property="postsid"/>
+        <association property="posts" javaType="com.jzlw.itc.domain.Posts"
+                    select="com.jzlw.itc.mapper.Postsmapper.findByid" column="postsid">
+        </association>
+    </resultMap>
+    <!--测试用来输出所有用户-->
+    <select id="slectall" resultType="com.jzlw.itc.domain.User">
+        select * from user
+    </select>
+    <!--输出想要查找的用户和其它关系-->
+    <select id="selectuserattribute" resultMap="usermap">
+        select * from user where id = #{id}
+    </select>
+    <select id="selectuserposts0" resultType="com.jzlw.itc.domain.Posts">
+        select * from posts where userid = #{userid}
+    </select>
+    <select id="selectuserposts1" resultType="com.jzlw.itc.domain.FileEntity">
+        select * from video where userid = #{userid}
+    </select>
+    <select id="selectuserposts2" resultType="com.jzlw.itc.domain.Comment">
+        select * from comment where userid = #{userid}
+    </select>
+    <select id="selectuserposts3" resultMap="goodpmap">
+        select * from goodp where userid = #{userid}
+    </select>
+    <select id="selectuserposts4" resultMap="goodvmap">
+        select * from goodv where userid = #{userid}
+    </select>
+    <select id="selectuserposts5" resultMap="collectionpmap">
+        select * from collectionp where userid = #{userid}
+    </select>
+    <select id="selectuserposts6" resultMap="collectionvmap">
+        select * from collectionv where userid = #{userid}
+    </select>
+    <select id="selectuserposts7" resultType="com.jzlw.itc.domain.Trashcan">
+        select * from trashcan where userid = #{userid}
+    </select>
+    <select id="selectuserposts8" resultType="com.jzlw.itc.domain.Headpicture">
+        select * from headpicture where userid = #{userid}
+    </select>
+    <!--登录-->
+    <select id="selectoflogin" resultType="com.jzlw.itc.domain.User">
+        select *from user where username = #{username} and password = #{password}
+    </select>
+    <!--注册-->
+    <insert id="insertauser">
+        insert into user
+        (username,password,sex,age,email,`type`)
+        values
+        (#{username}, #{password}, #{sex}, #{age}, #{email},0)
+    </insert>
+    <!--更新用户信息-->
+    <update id="updateuser">
+        update user set username=#{username},password=#{password},sex=#{sex},age=#{age},email=#{email}
+        where id = #{id}
+    </update>
+
+    <!--每个视频和帖子附上一个创作者的属性，创作者再加一个头像属性-->
+    <resultMap id="lowusermap" type="com.jzlw.itc.domain.User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <association property="headpicture" javaType="com.jzlw.itc.domain.Headpicture"
+                     select="com.jzlw.itc.mapper.Usermapper.selectuserposts8" column="id">
+        </association>
+    </resultMap>
+    <select id="selectauser" resultMap="lowusermap">
+        select * from user where id = #{id}
+    </select>
+</mapper>

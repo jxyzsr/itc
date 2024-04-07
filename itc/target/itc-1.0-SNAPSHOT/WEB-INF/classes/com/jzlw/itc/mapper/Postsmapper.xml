@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jzlw.itc.mapper.Postsmapper">
+    <resultMap id="postsmap" type="com.jzlw.itc.domain.Posts">
+        <id column="id" property="id"/>
+        <result column="userid" property="userid"/>
+        <association property="user" javaType="com.jzlw.itc.domain.User"
+                     select="com.jzlw.itc.mapper.Usermapper.selectauser" column="userid">
+        </association>
+    </resultMap>
+    <insert id="insertaposts">
+        insert into posts
+            (`time`,title,content,userid,numgood,numcollection)
+        values
+            (#{time},#{title},#{content},#{userid},0,0)
+    </insert>
+    <delete id="deleteaposts">
+        delete from posts where `id` = #{id} and userid = #{userid}
+    </delete>
+    <select id="selectposts" resultMap="postsmap">
+        select * from posts
+    </select>
+    <select id="findByid" resultMap="postsmap">
+        select * from posts where id = #{id}
+    </select>
+    <update id="padddNumgood">
+        update posts set numgood=numgood+1 where `id`= #{id}
+    </update>
+    <update id="pdeleteNumgood">
+        update posts set numgood=numgood-1 where `id`= #{id}
+    </update>
+    <update id="padddNumcollection">
+        update posts set numcollection=numcollection+1 where `id`= #{id}
+    </update>
+    <update id="pdeleteNumcollection">
+        update posts set numcollection=numcollection-1 where `id`= #{id}
+    </update>
+</mapper>

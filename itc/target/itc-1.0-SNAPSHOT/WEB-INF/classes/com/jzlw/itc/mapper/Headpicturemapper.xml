@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jzlw.itc.mapper.Headpicturemapper">
+    <insert id="insertahp">
+        insert into headpicture
+            (userid,padress)
+        values
+            (#{userid},#{padress})
+    </insert>
+    <update id="updateahp">
+        update headpicture set padress=#{padress}
+        where userid = #{userid}
+    </update>
+</mapper>

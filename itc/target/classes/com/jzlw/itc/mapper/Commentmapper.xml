@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jzlw.itc.mapper.Commentmapper">
+    <resultMap id="commentmap" type="com.jzlw.itc.domain.Comment">
+        <result column="userid" property="userid"/>
+        <association property="user" javaType="com.jzlw.itc.domain.User"
+                     select="com.jzlw.itc.mapper.Usermapper.selectauser" column="userid">
+        </association>
+    </resultMap>
+    <insert id="insertacomment">
+        insert into comment
+            (`time`,`content`,`type`,`itid`,`userid`)
+        values
+            (#{time},#{content},#{type},#{itid},#{userid})
+    </insert>
+    <delete id="deleteacommment">
+        delete from comment where itid = #{itid} and userid = #{userid} and `type` = #{type} and `content` = #{content}
+    </delete>
+    <select id="selectcommentbyid" resultMap="commentmap">
+        select * from comment where itid = #{itid} and `type` = #{type}
+    </select>
+    <delete id="deleteacommmentfordeleted">
+        delete from comment where itid = #{itid} and `type` = #{type}
+    </delete>
+</mapper>

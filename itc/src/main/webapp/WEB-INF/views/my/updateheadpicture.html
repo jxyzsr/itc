@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>修改个人信息</title>
+  <link rel="stylesheet" href="/static/css/csslogup.css">
+  <script src="/static/js/jquery.min.js"></script>
+</head>
+<body>
+<div class="rg_layout" style="margin-top: 6%">
+  <div class="rg_left">
+    <p>修改用户头像</p>
+    <p>UPDATE HEADPICTURE</p>
+  </div>
+  <div class="rg_center">
+    <div class="rg_form">
+      <form id="form" action="/add" method="post" enctype="multipart/form-data">
+        <br><br><br><br><br><br><br>
+        <table>
+          <!--label 标签的作用是当点击文字也会跳到文本输出框-->
+          <!--for属性与ID属性对应规定 label 绑定到哪个表单元素。-->
+          <tr>
+            <td class="td_left"><label for="file">上传图片</label> </td>
+            <td class="td_right"><input type="file" name="file" id="file" multiple="multiple"></td>
+            <br><br>
+          </tr>
+          <tr>
+            <td colspan="2" align="center">
+              <br><br>
+              <button id="btn_sub">确认上传</button>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  </div>
+  <div class="rg_right">
+    <p>点错了？<a id="tiao" href="/index">返回</a></p>
+  </div>
+<script>
+  var url = "/transmitinfo"
+  $.ajax({
+    url:url,
+    type:"post",
+    dataType:"json",
+    success:function (data){
+      var user = data
+      if(user.type === 1){
+        $("#tiao").attr('href',"/indexofadmin2")
+      }else {
+        $("#tiao").attr('href',"/index2")
+      }
+    },
+    error:function (xhr,status){
+      console.log("错误了")
+      console.log(status)
+    }
+  })
+</script>
+</div>
+</body>
+</html>

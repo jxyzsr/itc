@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jxy.Sysqanda.mapper.UserMapper">
+
+    <resultMap id="usermap" type="com.jxy.Sysqanda.domain.User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="role" property="role"/>
+<!--        <collection property="questions" ofType="com.jxy.systemqandadomain.Question">-->
+<!--            <result column="content" property="content"/>-->
+<!--            <result column="username" property="username"/>-->
+<!--        </collection>-->
+        <collection property="questions" ofType="com.jxy.Sysqanda.domain.Question"
+                    select="com.jxy.Sysqanda.mapper.UserMapper.selectAquestion" column="username">
+        </collection>
+        <collection property="answers" ofType="com.jxy.Sysqanda.domain.Answer"
+                    select="com.jxy.Sysqanda.mapper.UserMapper.selectAanswer" column="username">
+        </collection>
+    </resultMap>
+
+    <resultMap id="questionmap" type="com.jxy.Sysqanda.domain.Question">
+        <id column="id" property="id"/>
+        <result column="content" property="content"/>
+        <result column="username" property="username"/>
+        <collection property="answers" ofType="com.jxy.Sysqanda.domain.Answer"
+                    select="com.jxy.Sysqanda.mapper.UserMapper.selectanswersbyqid" column="id">
+        </collection>
+    </resultMap>
+
+    <resultMap id="answermap" type="com.jxy.Sysqanda.domain.Answer">
+        <result column="answer_content" property="answer_content"/>
+        <result column="question_id" property="question_id"/>
+        <association property="question" javaType="com.jxy.Sysqanda.domain.Question"
+                     select="com.jxy.Sysqanda.mapper.UserMapper.selectqusetionbyqid" column="question_id">
+        </association>
+    </resultMap>
+    <!--注册-->
+    <insert id="dologup" useGeneratedKeys="true" keyProperty="id">
+        insert into user(username,password,`role`)
+            values(#{username},#{password},0)
+    </insert>
+    <!--写入问题-->
+    <insert id="writeQuestion" useGeneratedKeys="true" keyProperty="id">
+        insert into question(username,content)
+            values(#{username},#{content})
+    </insert>
+    <!--写入回答-->
+    <insert id="writeAnswer">
+        insert into answer(username,answer_content,question_id)
+            values(#{username},#{answer_content},#{question_id})
+    </insert>
+    <!--更新用户信息-->
+    <update id="updateinfo" parameterType="com.jxy.Sysqanda.domain.User">
+        update user set username=#{username},password=#{password}
+        where id = #{id}
+    </update>
+    <!-- 配置查询所有操作 -->
+    <select id="selectAll" resultMap="usermap"> <!-- id中为方法的名称 -->
+        select * from user
+    </select>
+    <!--查询问题-->
+    <select id="selectAquestion" resultMap="questionmap">
+        select * from question where username = #{username}
+    </select>
+    <select id="selectqusetionbyqid" resultType="com.jxy.Sysqanda.domain.Question">
+        select * from question where id = #{question_id}
+    </select>
+
+    <select id="selectAanswer" resultMap="answermap">
+        select * from answer where username = #{username}
+    </select>
+    <select id="selectanswersbyqid" resultType="com.jxy.Sysqanda.domain.Answer">
+        select * from answer where question_id = #{id}
+    </select>
+    <!--登录-->
+    <select id="searchAllByUsername" resultType="com.jxy.Sysqanda.domain.User">
+        select * from user where username = #{username}
+    </select>
+    <select id="selectQuestionbyContent" resultMap="questionmap">
+        select * from question where content = #{content}
+    </select>
+    <!--展示所有的问题-->
+    <select id="selectAllquestion" resultMap="questionmap">
+        select * from question
+    </select>
+</mapper>

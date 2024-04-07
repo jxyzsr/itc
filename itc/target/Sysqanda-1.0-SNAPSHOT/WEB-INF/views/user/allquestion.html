@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="/static/js/jquery.min.js"></script>
+</head>
+<body>
+<h1 style="color: red ;margin-left: 10%">热点问题</h1>
+<div class="display"></div>
+<script>
+  var url = "/indexquestion"
+  $.ajax({
+    url:url,
+    type:"post",
+    dataType:"json",
+    success:function (data){
+      var question = data
+      var thehtml = ''
+      question.forEach((item,index) => {
+        str ="<h2>" + item.content + "</h2>"
+        if (item.answers.length === 0){
+          str += "<h5>" + "此问题无回答" + "</h5>"
+        }
+        item.answers.forEach(i =>{
+          str = str +
+                  "<h5>" + "用户" + i.username + "回答说" +"</h5>"+
+                  "<span style='color: #2D93CA; font-family: 等线'>" + i.answer_content + "</span>" +
+                  "<hr>"
+        })
+        thehtml = thehtml + str
+      })
+      $('.display').html(thehtml)
+    },
+    error:function (xhr,status){
+      console.log("错误原因：")
+      console.log(status)
+    }
+  })
+</script>
+</body>
+</html>

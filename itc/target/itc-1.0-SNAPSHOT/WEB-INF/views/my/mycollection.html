@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我的收藏</title>
+    <script src="/static/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="/static/css/base.css">
+</head>
+<body>
+<div class="video" style="width: auto;height: auto"></div>
+<hr>
+<div class="posts" style="width: auto;height: auto"></div>
+</body>
+<script>
+    $.ajax({
+        url:"/transmitinfo",
+        type:"post",
+        dataType:"json",
+        success:function (data){
+            var user = data
+            var thehtml = "<h1>我收藏的视频</h1>"
+            user.collectionvs.forEach((item,index) => {
+                str =
+                    "<div class='star1'>"
+                        +"<a class='star1a' href='/loadid?fileId="+item.video.fileId +"'>"
+                            +"<img class='star1img' src=" + item.video.cover + "></imgs>"
+                        +"</a>"
+                        +"<h4 class='star1h4'>"+ item.video.title+"</h4><br>"
+                        +"<h4 class='star1h4'>"+ item.video.uploadTime+"</h4>"
+                    +"</div>"
+                thehtml = thehtml + str
+            })
+            $('.video').html(thehtml)
+            var thehtml2 = "<h1>我收藏的帖子</h1>"
+            user.collectionps.forEach((item,index) => {
+                str =
+                    "<div class='star2'>"
+                        +"<div class='headpicture'>"
+                            +"<img class='star2img' src= '" + item.posts.user.headpicture.padress + "'>"
+                            +"<br><span class='content'>"+item.posts.user.username+"</span><br>"
+                        +"</div>"
+                        +"<div class='title'>"
+                            +"<a class='star2a' href='/loadpostsid?postsid="+ item.posts.id + "'>"
+                            +"<h2 class='star2h2'>标题:&nbsp;&nbsp;" + item.posts.title + "</h2><br>"
+                            +"</a>"
+                            +"<br><span class='content'>帖子内容速看："+item.posts.content+"</span><br>"
+                        +"</div>"
+                    +"</div>"
+                thehtml2 = thehtml2 + str
+            })
+            $('.posts').html(thehtml2)
+        },
+        error:function (xhr,status){
+            console.log("错误了")
+            console.log(status)
+        }
+    })
+</script>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>停词管理平台</title>
+  <link rel="stylesheet" href="static/layui-v2.6.8/layui/css/layui.css">
+  <script src="static/layui.js"></script>
+  <script src="static/jquery.min.js"></script>
+  <style>
+    body{
+       overflow-x: hidden;
+    }
+  </style>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+  <div class="layui-header">
+    <div class="layui-logo layui-hide-xs layui-bg-black">停词管理平台</div>
+    <!-- 头部区域（可配合layui 已有的水平导航） -->
+    <ul class="layui-nav layui-layout-right">
+      <li class="layui-nav-item layui-hide layui-show-md-inline-block">
+      </li>
+      <li class="layui-nav-item" lay-header-event="menuRight" lay-unselect>
+        <a href="javascript:;">
+          <i class="layui-icon layui-icon-more-vertical"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+      <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+      <ul class="layui-nav layui-nav-tree" lay-filter="test">
+        <li class="layui-nav-item layui-nav-itemed">
+          <a class="" href="javascript:;">友情网站</a>
+          <dl class="layui-nav-child">
+            <dd><a href="http://127.0.0.1:5000/app1">国际粮农组织</a></dd>
+            <dd><a href="http://127.0.0.1:5000/app2">中国农业农村部</a></dd>
+            <dd><a href="http://127.0.0.1:5000/app3">中国国家统计局</a></dd>
+            <dd><a href="http://127.0.0.1:5000/app4">中国粮食行业协会</a></dd>
+            <dd><a href="http://127.0.0.1:5000/app5">国家粮食与物资储备局</a></dd>
+            <dd><a href="http://127.0.0.1:5000/app6">黑龙江省粮食局</a></dd>
+            <dd><a href="http://127.0.0.1:5000/app7">河南省粮食局</a></dd>
+            <dd><a href="http://127.0.0.1:5000/app8">山东省粮食局</a></dd>
+            <dd><a href="http://127.0.0.1:5000/app9">辽宁省粮食局</a></dd>
+            <dd><a href="http://127.0.0.1:5000/app10">河北省粮食局</a></dd>
+            <dd><a href="http://127.0.0.1:5000/app11">吉林省粮食局</a></dd>
+            <dd><a href="http://127.0.0.1:5000/app12">益海嘉里粮油</a></dd>
+            <dd><a href="http://127.0.0.1:5000/app13">总和</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item">
+          <a href="javascript:;">词频排行榜</a>
+          <dl class="layui-nav-child">
+            <dd><a href="http://127.0.0.1:5000/app14">词频排行榜</a></dd>
+            <dd><a href="http://127.0.0.1:5000/app15">热词变化趋势</a></dd>
+          </dl>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+
+  <div class="layui-body">
+    <!-- 内容主体区域 -->
+    <iframe id="iframeMain" src="http://127.0.0.1:5000/deleateaword" scrolling="no" style="width: 100%; height:100%;"></iframe>
+  </div>
+
+  <div class="layui-footer">
+    <h3 style=" text-align: center">提交后自动刷新页面</h3>
+  </div>
+</div>
+<script>
+ //JS
+layui.use(['element', 'layer', 'util'], function(){
+  var element = layui.element
+  ,layer = layui.layer
+  ,util = layui.util
+  ,$ = layui.$;
+
+  //头部事件
+  util.event('lay-header-event', {
+    //左侧菜单事件
+    menuLeft: function(othis){
+      layer.msg('展开左侧菜单的操作', {icon: 0});
+    }
+    ,menuRight: function(){
+      layer.open({
+        type: 1
+        ,content: '<div style="padding: 15px;">处理右侧面板的操作</div>'
+        ,area: ['260px', '100%']
+        ,offset: 'rt' //右上角
+        ,anim: 5
+        ,shadeClose: true
+      });
+    }
+  });
+});
+
+$(document).ready(function(){
+  $("dd>a").click(function (e) {
+  e.preventDefault();
+  $("#iframeMain").attr("src",$(this).attr("href"));
+  });
+});
+
+</script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family:sans-serif;
+}
+body{
+    background: rgb(250, 250, 250);
+}
+header{
+    background: rgb(70, 151, 170);;
+    position: fixed;
+    top:0 ;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.6s;
+    padding: 40px 100px;
+    z-index: 10000;
+}
+header.sticky{
+    padding: 5px 100px;
+    background-color: #fff;
+}
+header.sticky ul li a,header.sticky .logo{
+    color: #000;
+}
+
+header .logo{
+    position: relative;
+    font-weight: 700;
+    color: #000;
+    text-decoration: none;
+    font-size: 2em;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: 0.6s;
+}
+
+header ul{
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+}
+
+header ul li{
+    position: relative;
+    list-style: none;
+
+}
+header ul li a {
+    position: relative;
+    margin:  0 15px;
+    text-decoration: none;
+    color: #000;
+    font-weight: bolder;
+    transition: 0.6s;
+    letter-spacing: 2px;
+}
+.banner{
+    position: relative;
+    width: 89%;
+    height: 10000px;
+}
+body,html{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: sans-serif;
+}
+.sidebar{
+    float: left;
+    width: 100px;
+    height: 400px;
+    background: rgb(41, 92, 105);
+    overflow: hidden;
+    position: relative;
+    top: -103%;
+    border-radius: 15px;
+    transition: 0.8s  all;
+    opacity: 0.5;
+    margin-left: 1%;
+    margin-top: 10%;
+}
+.sidebar ul{
+    margin-left:0;
+    padding: 0;
+}
+.side{
+    margin-left: -101px;
+}
+.sidebar ul li{
+    list-style: none;
+}
+.sidebar ul li a {
+    text-decoration: none;
+    color: white;
+    height: 100px;
+    width: 100%;
+    font-size: 40px;
+    line-height: 80px;
+    text-align: center;
+    display: block;
+    transition: 0.5s all;
+}
+.sidebar ul li a:hover{
+    background: #D8EEF3;
+}
+.btn{
+    float: left;
+    position: relative;
+    top: -103%;
+    padding: 0 10px;
+    font-size: 40px;
+    text-decoration: none;
+    color: rgb(29, 64, 73);
+    font-family: Ionicons;
+    cursor: pointer;
+    opacity: 0.5;
+    margin-top: 10%;
+}
+.btn:before{
+    content: '\f12a';
+}
+.btnc:before{
+    content: "\f20d";
+}
+.outframe{
+    margin-top: 8%;
+    margin-left: 12.5%;
+    width: 100%;
+    height: 103%;
+    overflow-x: hidden;
+    overscroll-behavior: none;
+    overflow-y: hidden;
+}
+/* 改动banner的height让他足够长，outframe就没了滑动条 */

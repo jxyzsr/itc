@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jzlw.itc.mapper.Filemapper">
+  <resultMap id="videomap" type="com.jzlw.itc.domain.FileEntity">
+    <result column="fileId" property="fileId"/>
+    <result column="userid" property="userid"/>
+    <association property="user" javaType="com.jzlw.itc.domain.User"
+                 select="com.jzlw.itc.mapper.Usermapper.selectauser" column="userid">
+    </association>
+  </resultMap>
+  <update id="updatecover">
+    update video set title=#{title},cover=#{cover}
+    where titleAlter = #{titleAlter}
+  </update>
+  <select id="findByid" parameterType="java.lang.Long" resultMap="videomap">
+    select * from video where fileId=#{id}
+  </select>
+  <insert id="saveFile" parameterType="com.jzlw.itc.domain.FileEntity">
+    insert into video
+    (titleOrig,titleAlter,`size`,`type`,`path`,`uploadTime`,`userid`,`cover`,numgood,numcollection)
+    VALUES
+    (#{titleOrig}, #{titleAlter}, #{size}, #{type}, #{path},#{uploadTime},#{userid},#{cover},0,0)
+  </insert>
+  <select id="selectvideo" resultMap="videomap">
+    select * from video
+  </select>
+  <update id="vadddNumgood">
+    update video set numgood=numgood+1 where fileId= #{id}
+  </update>
+  <update id="vdeleteNumgood">
+    update video set numgood=numgood-1 where fileId= #{id}
+  </update>
+  <update id="vadddNumcollection">
+    update video set numcollection=numcollection+1 where fileId= #{id}
+  </update>
+  <update id="vdeleteNumcollection">
+    update video set numcollection=numcollection-1 where fileId= #{id}
+  </update>
+  <delete id="deletevideo">
+    delete from video where userid = #{userid} and fileId =#{id}
+  </delete>
+</mapper>

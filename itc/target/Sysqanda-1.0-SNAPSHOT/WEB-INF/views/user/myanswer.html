@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/static/js/jquery.min.js"></script>
+</head>
+<body>
+        <div class="display"></div>
+<script>
+    var url = "/allanswer"
+    $.ajax({
+        url:url,
+        type:"post",
+        dataType:"json",
+        success:function (data){
+            var answer = data
+            var thehtml = ""
+            answer.forEach((item,index) => {
+                str =
+                    "<h2>" + "我回答的是" + item.question.username + "的这个问题：" +"</h2>"+
+                    "<h5 style='font-family: 宋体'>" + item.question.content + "</h5>"+
+                    "<span style='color: #2D93CA; font-family: 等线'>" + "我给出了这个回答："+ item.answer_content + "</span>"
+                thehtml = thehtml + str
+            })
+            $('.display').html(thehtml)
+        },
+        error:function (xhr,status){
+            console.log("错误了")
+            console.log(status)
+        }
+    })
+</script>
+</body>
+</html>
